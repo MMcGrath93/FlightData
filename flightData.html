@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flight Information</title>
+    <link rel="stylesheet" href="mystyle.css">
+</head>
+
+<body>
+    <!--Flight info form-->
+    <h1>Flight Information</h1>
+    <form id="flightForm">
+        <label for="flightNumber">Enter Flight Number (e.g., AA6201):</label>
+        <br><br>
+        <input type="text" id="flightNumber" name="flight_iata" placeholder="Enter Flight Number" required>
+        <br><br>
+        <button type="button" id="submit">Get Flight Info</button>
+    </form>
+
+    <br>
+    <br>
+    
+ 
+    <table>
+        <tr>
+            <td><strong>Departure Airport:</strong></td>
+            <td><span id="airInfo"></span></td>
+        </tr>
+        <tr>
+            <td><strong>Terminal:</strong></td>
+            <td><span id="terInfo"></span></td>
+        </tr>
+        <tr>
+            <td><strong>Gate:</strong></td>
+            <td><span id="gateInfo"></span></td>
+        </tr>
+        <tr>
+            <td><strong>Departure Time:</strong></td>
+            <td><span id="depTime"></span></td>
+        </tr>
+        <tr>
+            <td><strong>Destination:</strong></td>
+            <td><span id="destInfo"></span></td>
+        </tr>
+    </table>
+
+
+    <script>
+        //function to retrieve flight details from API whe clicking the button
+        document.addEventListener("DOMContentLoaded", function () {
+            function getFlightInfo() {
+                //set the endpoint
+                const flightNumber = document.getElementById('flightNumber').value;
+                const apiKey = '1a83399b-0ba6-492b-8fd1-e5115bd08754'; // Replace with your API key
+                const apiUrl = `https://airlabs.co/api/v9/flight?flight_iata=${flightNumber}&api_key=${apiKey}`;
+
+                fetch(apiUrl)
+                    //get response
+                    .then(response => response.json())
+                    .then(data => {
+                        // Check if the "arr_gate" property exists in the API response
+                        if (data.response && data.response.dep_gate !== null) {
+                            //display gate
+                            document.getElementById('gateInfo').textContent = `${data.response.dep_gate}`;
+                            document.getElementById('depTime').textContent = `${data.response.dep_time}`;
+                            document.getElementById('terInfo').textContent = `${data.response.dep_terminal}`;
+                            document.getElementById('airInfo').textContent = `${data.response.dep_name}`;
+                            document.getElementById('destInfo').textContent = `${data.response.arr_city}`;
+                        } else {
+                            //display gate not available
+                            document.getElementById('gateInfo').textContent = 'Gate information not available';
+                        }
+                    })
+                    .catch(error => {
+                        // Handle errors
+                        document.getElementById('gateInfo').textContent = 'Error';
+                    });
+            }
+
+            // Attach the click event handler
+            document.getElementById("submit").addEventListener('click', getFlightInfo);
+        });
+    </script>
+    <br><br><br><br><br><br><br><br><br><br><br>
+    <footer>
+
+        <p>Flight data provided by AirLabs</p>
+    </footer>
+</body>
+
+</html>

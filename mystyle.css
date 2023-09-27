@@ -1,0 +1,32 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1,p,h2,form {
+  text-align: center;
+}
+
+
+
+.container {
+  display: flex;
+  justify-content:baseline;
+  align-items: left;
+  align-content: left;
+  text-align:left;
+
+  
+}
+
+.item-1{
+  background-color:brown
+  f
+}
+
+h1{
+  color:crimson;
+}
+
+table{
+  margin: 0 auto;
+}
